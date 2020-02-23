@@ -1,4 +1,4 @@
 python-telegram-bot
-alphavantage
+alpha_vantage
 pytz
 pandas
