@@ -16,7 +16,7 @@ def calculate():
  tz = pytz.timezone('Asia/Calcutta')
  ist = datetime.now(tz).strftime("%H:%M:%S")
  ist = datetime.strptime(ist,"%H:%M:%S")
- if ist>datetime.strptime('09:05:00',"%H:%M:%S") and ist<datetime.strptime('17:30:00',"%H:%M:%S"):
+ if ist>datetime.strptime('09:05:00',"%H:%M:%S") and ist<datetime.strptime('15:30:00',"%H:%M:%S"):
   flag=1
  else: 
   flag=0
@@ -54,7 +54,7 @@ while True:
 
  else:
   start_time = time.time()
-  print('cannot start')
+  print('cannot start as stock market is closed')
   print("--- %s seconds ---" % (time.time() - start_time))
  time.sleep(60)
   
