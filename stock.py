@@ -37,8 +37,7 @@ while True:
   start_time = time.time()
   print('program started')
   data,meta_data = ts.get_intraday(symbol=symbol,interval='1min',outputsize='full')
-  data1,meta_data1 = ti.get_sma(symbol=symbol,interval='1min', time_period=21)
-  data2,meta_data2 = ti.get_sma(symbol=symbol,interval='1min', time_period=8)
+  data = data.sort_index()
   data['LMA']=data['4. close'].rolling(window=21).mean()
   data['SMA']=data['4. close'].rolling(window=9).mean()
 
