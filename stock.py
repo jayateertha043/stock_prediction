@@ -16,7 +16,7 @@ def calculate():
  tz = pytz.timezone('Asia/Calcutta')
  ist = datetime.now(tz).strftime("%H:%M:%S")
  ist = datetime.strptime(ist,"%H:%M:%S")
- if ist>datetime.strptime('09:10:00',"%H:%M:%S") and ist<datetime.strptime('14:30:00',"%H:%M:%S"):
+ if ist>datetime.strptime('09:05:00',"%H:%M:%S") and ist<datetime.strptime('17:30:00',"%H:%M:%S"):
   flag=1
  else: 
   flag=0
@@ -36,7 +36,7 @@ while True:
  if calculate():
   start_time = time.time()
   print('program started')
-  data,meta_data = ts.get_intraday(symbol=symbol,interval='1min',outputsize='full')
+  data,meta_data = ts.get_intraday(symbol=symbol,interval='1min',outputsize='compact')
   data = data.sort_index()
   data['LMA']=data['4. close'].rolling(window=21).mean()
   data['SMA']=data['4. close'].rolling(window=9).mean()
