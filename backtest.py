@@ -25,9 +25,15 @@ def add_sma_crossover():
  #if (((data['SMA'][-1]>data['LMA'][-1])and(data['psma'][-1]<data['plma'][-1])) or ((data['SMA'][-1]<data['LMA'][-1])and(data['psma'][-1]>data['plma'][-1]))) or (((data['SMA'][-2]>data['LMA'][-2])and(data['psma'][-2]<data['plma'][-2])) or ((data['SMA'][-2]<data['LMA'][-2])and(data['psma'][-2]>data['plma'][-2]))) :
  data['buy']=(data['SMA']>data['LMA'])&(data['psma']<data['plma'])
  data['sell']=(data['SMA']<data['LMA'])&(data['psma']>data['plma'])
-
+def add_mfi():
+ data['MSI']=ta.mfi(data['2. high'],data['3. low'],data['4. close'],data['5. volume'])
+def add_adx():
+ df=ta.adx(data['2. high'],data['3. low'],data['4. close'])
+ data['ADX']=df['ADX_14']
+ data['DMP']=df['DMP_14']
+ data['DMN']=df['DMN_14']
 def add_rsi():
- data['RSI']=ta.rsi(data['4. close'],14)
+ data['RSI']=ta.rsi(data['4. close'])
 def test(d):
  pb=-1
  investment = 15000
@@ -64,20 +70,24 @@ print('program started')
 data,meta_data = get_data()
 #add sma crossover datas
 add_sma_crossover()
+add_adx()
+add_mfi()
 add_rsi()
+data.to_excel('out.xlsx')
   #if (((data['SMA'][-1]>data['LMA'][-1])and(data['psma'][-1]<data['plma'][-1])) or ((data['SMA'][-1]<data['LMA'][-1])and(data['psma'][-1]>data['plma'][-1]))) or (((data['SMA'][-2]>data['LMA'][-2])and(data['psma'][-2]<data['plma'][-2])) or ((data['SMA'][-2]<data['LMA'][-2])and(data['psma'][-2]>data['plma'][-2]))) :
 print("-------------------------------------")
 print(data.tail())
 print('profit:'+str(test(data)))
+data.to_excel('out.xlsx')
 print("--- %s seconds ---" % (time.time() - start_time))
 
  
 
-#help(ta.rsi)
+#help(ta.adx)
 
 
   
-#data.to_excel('out.xlsx')
+
 
 """data['sma'] = data['4. close'].rolling(window=6).mean()
 data['lma'] = data['4. close'].rolling(window=14).mean()
