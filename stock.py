@@ -23,7 +23,7 @@ def calculate():
  return flag
 
 api_key = '4EWAGGPCYI53F188'
-symbol = 'NSE:YESBANK'
+symbol = 'NSE:FEDERALBNK'
 telegram_api = '1090803462:AAE5X2H-ojW3gxIji-1A7TaStbXKAavy_nM'
 bot = telegram.Bot(token=telegram_api)
 msg = 'cross over alert for symbol: {}'.format(symbol)
@@ -50,6 +50,7 @@ while True:
   if (((data['SMA'][-1]>data['LMA'][-1])and(data['psma'][-1]<data['plma'][-1])) or ((data['SMA'][-1]<data['LMA'][-1])and(data['psma'][-1]>data['plma'][-1]))) or (((data['SMA'][-2]>data['LMA'][-2])and(data['psma'][-2]<data['plma'][-2])) or ((data['SMA'][-2]<data['LMA'][-2])and(data['psma'][-2]>data['plma'][-2]))) :
    msg = msg + '\n\n{}'.format(data[-2:])
    notify()
+   msg = 'cross over alert for symbol: {}'.format(symbol)
    print("--- %s seconds ---" % (time.time() - start_time))
 
  else:

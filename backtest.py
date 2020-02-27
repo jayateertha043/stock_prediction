@@ -9,7 +9,7 @@ import pandas_ta as ta
 
 #variables required
 api_key = '4EWAGGPCYI53F188'
-symbol = 'NSE:PNB'
+symbol = 'NSE:FEDERALBNK'
 ts = TimeSeries(key=api_key,output_format='pandas')
 
 def get_data():
@@ -38,12 +38,12 @@ def test(d):
  print('----------------backtest started----------------------------')
  for i in range(0,len(d)):
   if d['buy'][i]:
-   if balance-20>= d['4. close'][i]:
+   if balance>= d['4. close'][i]:
     stocks =stocks+(balance//d['4. close'][i])
     if stocks>=1:
      price = stocks*d['4. close'][i]
      if balance>=price:
-      balance=balance-price-20
+      balance=balance-price
       pb=i
       print('=>buy:\n{3}\nquantity:{0} price:{1} balance:{2}------------------------'.format(stocks,price,balance,d.iloc[[i]]))
 	  
@@ -73,7 +73,7 @@ print("--- %s seconds ---" % (time.time() - start_time))
 
  
 
-help(ta.rsi)
+#help(ta.rsi)
 
 
   
