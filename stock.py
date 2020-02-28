@@ -18,7 +18,9 @@ msg = 'cross over alert for symbol: {}'.format(symbol)
 sell_msg = 'best sell point found\n'
 def get_data():
  data,meta_data = ts.get_intraday(symbol=symbol,interval='1min',outputsize='compact')
+ data.index=data.index.tz_localize('US/Eastern').tz_convert('Asia/Calcutta')
  data = data.sort_index()
+ print(meta_data)
  return data,meta_data
 
 def add_sma_crossover():
@@ -50,7 +52,7 @@ def calculate():
  tz = pytz.timezone('Asia/Calcutta')
  ist = datetime.now(tz).strftime("%H:%M:%S")
  ist = datetime.strptime(ist,"%H:%M:%S")
- if ist>datetime.strptime('09:05:00',"%H:%M:%S") and ist<datetime.strptime('23:30:00',"%H:%M:%S"):
+ if ist>datetime.strptime('09:05:00',"%H:%M:%S") and ist<datetime.strptime('15:00:00',"%H:%M:%S"):
   flag=1
  else: 
   flag=0
