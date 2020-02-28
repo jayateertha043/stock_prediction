@@ -9,7 +9,7 @@ import pandas_ta as ta
 
 #variables required
 api_key = '4EWAGGPCYI53F188'
-symbol = 'NSE:FEDERALBNK'
+symbol = 'NSE:YESBANK'
 ts = TimeSeries(key=api_key,output_format='pandas')
 
 telegram_api = '1090803462:AAE5X2H-ojW3gxIji-1A7TaStbXKAavy_nM'
@@ -27,7 +27,7 @@ def add_sma_crossover():
  data['psma']=data['SMA'].shift(1)
  data['plma']=data['LMA'].shift(1)
  #if (((data['SMA'][-1]>data['LMA'][-1])and(data['psma'][-1]<data['plma'][-1])) or ((data['SMA'][-1]<data['LMA'][-1])and(data['psma'][-1]>data['plma'][-1]))) or (((data['SMA'][-2]>data['LMA'][-2])and(data['psma'][-2]<data['plma'][-2])) or ((data['SMA'][-2]<data['LMA'][-2])and(data['psma'][-2]>data['plma'][-2]))) :
- data['buy_sma']=(data['SMA']>data['LMA'])&(data['psma']<data['plma'])
+ data['buy_sma']=(data['SMA']>data['LMA'])&(data['psma']<data['plma'])&(data['SMA'].shift(-1)>data['LMA'].shift(-1))
  data['sell_sma']=(data['SMA']<data['LMA'])&(data['psma']>data['plma'])
 def add_mfi():
  data['MSI']=ta.mfi(data['2. high'],data['3. low'],data['4. close'],data['5. volume'])
@@ -50,7 +50,7 @@ def calculate():
  tz = pytz.timezone('Asia/Calcutta')
  ist = datetime.now(tz).strftime("%H:%M:%S")
  ist = datetime.strptime(ist,"%H:%M:%S")
- if ist>datetime.strptime('09:05:00',"%H:%M:%S") and ist<datetime.strptime('14:30:00',"%H:%M:%S"):
+ if ist>datetime.strptime('09:05:00',"%H:%M:%S") and ist<datetime.strptime('23:30:00',"%H:%M:%S"):
   flag=1
  else: 
   flag=0
@@ -68,12 +68,12 @@ while True:
   add_mfi()
   add_rsi()
   #sell
-  data['SELL']=(data['ADX']>23) & (data['DMP']>data['DMN']) & (data['MSI']>75)
+  data['SELL']=(data['ADX']>23) & (data['DMP']>data['DMN']) & (data['MSI']>50) &(~data['buy_sma'])
   #data.to_excel('out.xlsx')
   print(data.tail())
 #loc=((data['SMA']>data['LMA'])&(data['psma']<data['plma'])|(data['SMA']<data['LMA'])&(data['psma']>data['plma']))
 
-  if (((data['SMA'][-1]>data['LMA'][-1])and(data['psma'][-1]<data['plma'][-1])) or ((data['SMA'][-1]<data['LMA'][-1])and(data['psma'][-1]>data['plma'][-1]))) or (((data['SMA'][-2]>data['LMA'][-2])and(data['psma'][-2]<data['plma'][-2])) or ((data['SMA'][-2]<data['LMA'][-2])and(data['psma'][-2]>data['plma'][-2]))) :
+  if data['buy_sma'][-1] or data['buy_sma'][-2] or datadata['buy_sma'][-3]:
    msg = msg + '\n\nclose price{}'.format(data[-2:]['4. close'])
    notify()
    msg = 'cross over alert for symbol: {}'.format(symbol)
