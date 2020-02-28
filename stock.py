@@ -79,7 +79,7 @@ while True:
    notify()
    msg = 'cross over alert for symbol: {}'.format(symbol)
    print("--- %s seconds ---" % (time.time() - start_time))
-  elif (data['SELL'][-1]) or (data['SELL'][-2]):
+  elif (data['SELL'][-1]) or (data['SELL'][-2]) or (data['SELL'][-3]): 
    sell_msg=sell_msg + '\n\nclose price{}'.format(data[-2:]['4. close'])
    notify_sell()
    sell_msg = 'best sell point found\n'
