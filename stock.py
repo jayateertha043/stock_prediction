@@ -75,7 +75,7 @@ while True:
   print(data.tail())
 #loc=((data['SMA']>data['LMA'])&(data['psma']<data['plma'])|(data['SMA']<data['LMA'])&(data['psma']>data['plma']))
 
-  if data['buy_sma'][-1] or data['buy_sma'][-2] or datadata['buy_sma'][-3]:
+  if data['buy_sma'][-1] or data['buy_sma'][-2] or data['buy_sma'][-3]:
    msg = msg + '\n\nclose price{}'.format(data[-2:]['4. close'])
    notify()
    msg = 'cross over alert for symbol: {}'.format(symbol)
