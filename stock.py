@@ -9,7 +9,7 @@ import pandas_ta as ta
 
 #variables required
 api_key = '4EWAGGPCYI53F188'
-symbol = 'NSE:YESBANK'
+symbol = 'NSE:FEDERALBNK'
 ts = TimeSeries(key=api_key,output_format='pandas')
 
 telegram_api = '1090803462:AAE5X2H-ojW3gxIji-1A7TaStbXKAavy_nM'
@@ -52,7 +52,7 @@ def calculate():
  tz = pytz.timezone('Asia/Calcutta')
  ist = datetime.now(tz).strftime("%H:%M:%S")
  ist = datetime.strptime(ist,"%H:%M:%S")
- if ist>datetime.strptime('09:05:00',"%H:%M:%S") and ist<datetime.strptime('15:00:00',"%H:%M:%S"):
+ if ist>datetime.strptime('09:05:00',"%H:%M:%S") and ist<datetime.strptime('23:00:00',"%H:%M:%S"):
   flag=1
  else: 
   flag=0
