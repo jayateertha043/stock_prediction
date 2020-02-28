@@ -18,9 +18,8 @@ msg = 'cross over alert for symbol: {}'.format(symbol)
 sell_msg = 'best sell point found\n'
 def get_data():
  data,meta_data = ts.get_intraday(symbol=symbol,interval='1min',outputsize='compact')
- data.index=data.index.tz_localize('US/Eastern').tz_convert('Asia/Calcutta')
+ data.index=data.index.tz_localize(meta_data]['6. Time Zone']).tz_convert('Asia/Calcutta')
  data = data.sort_index()
- print(meta_data)
  return data,meta_data
 
 def add_sma_crossover():
@@ -88,7 +87,7 @@ while True:
  else:
   start_time = time.time()
   print('cannot start as stock market is closed')
-  print("--- %s seconds ---" % (time.time() - start_time))
+ print("--- %s seconds ---" % (time.time() - start_time))
  time.sleep(60)
   
 #data.to_excel('out.xlsx')
