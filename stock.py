@@ -18,7 +18,7 @@ msg = 'cross over alert for symbol: {}'.format(symbol)
 sell_msg = 'best sell point found\n'
 def get_data():
  data,meta_data = ts.get_intraday(symbol=symbol,interval='1min',outputsize='compact')
- data.index=data.index.tz_localize(meta_data]['6. Time Zone']).tz_convert('Asia/Calcutta')
+ data.index=data.index.tz_localize(meta_data['6. Time Zone']).tz_convert('Asia/Calcutta')
  data = data.sort_index()
  return data,meta_data
 
