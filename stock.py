@@ -14,8 +14,8 @@ ts = TimeSeries(key=api_key,output_format='pandas')
 
 telegram_api = '1090803462:AAE5X2H-ojW3gxIji-1A7TaStbXKAavy_nM'
 bot = telegram.Bot(token=telegram_api)
-msg = 'cross over alert for symbol: {}'.format(symbol)
-sell_msg = 'best sell point found\n'
+msg = 'cross over alert for symbol: {}\n'.format(symbol)
+sell_msg = 'best sell point found for symbol: {}\n'.format(symbol)
 def get_data():
  data,meta_data = ts.get_intraday(symbol=symbol,interval='1min',outputsize='compact')
  data.index=data.index.tz_localize(meta_data['6. Time Zone']).tz_convert('Asia/Calcutta')
@@ -49,12 +49,17 @@ def notify_sell():
 def calculate():
  flag=1
  tz = pytz.timezone('Asia/Calcutta')
- ist = datetime.now(tz).strftime("%H:%M:%S")
- ist = datetime.strptime(ist,"%H:%M:%S")
- if ist>datetime.strptime('09:05:00',"%H:%M:%S") and ist<datetime.strptime('15:00:00',"%H:%M:%S"):
-  flag=1
+ day = int(datetime.now(tz).strftime("%w"))
+ if day not in [0,6]:#not saturday or sunday
+  ist = datetime.now(tz).strftime("%H:%M:%S")
+  ist = datetime.strptime(ist,"%H:%M:%S")
+  if ist>datetime.strptime('09:05:00',"%H:%M:%S") and ist<datetime.strptime('15:00:00',"%H:%M:%S"):#market time
+   flag=1
+  else:
+   flag=0
  else: 
   flag=0
+  print('Bot on Leave!!!')
  return flag
 
 while True:
@@ -69,20 +74,20 @@ while True:
   add_mfi()
   add_rsi()
   #sell
-  data['SELL']=(data['ADX']>23) & (data['DMP']>data['DMN']) & (data['MSI']>50) &(~data['buy_sma'])
+  data['SELL']=(data['ADX']>23) & (data['DMP']>data['DMN']) & (data['MSI']>49) &(~data['buy_sma'])
   #data.to_excel('out.xlsx')
   print(data.tail())
 #loc=((data['SMA']>data['LMA'])&(data['psma']<data['plma'])|(data['SMA']<data['LMA'])&(data['psma']>data['plma']))
 
   if data['buy_sma'][-1] or data['buy_sma'][-2] or data['buy_sma'][-3]:
-   msg = msg + '\n\nclose price{}'.format(data[-2:]['4. close'])
+   msg = msg + '\n\nclose price{}:'.format(data[-2:]['4. close'])
    notify()
-   msg = 'cross over alert for symbol: {}'.format(symbol)
+   msg = 'cross over alert for symbol: {}\n'.format(symbol)
    print("--- %s seconds ---" % (time.time() - start_time))
   elif (data['SELL'][-1]) or (data['SELL'][-2]) or (data['SELL'][-3]): 
-   sell_msg=sell_msg + '\n\nclose price{}'.format(data[-2:]['4. close'])
+   sell_msg=sell_msg + '\n\nclose price:{}'.format(data[-2:]['4. close'])
    notify_sell()
-   sell_msg = 'best sell point found\n'
+   sell_msg = 'best sell point found for symbol: {}\n'.format(symbol)
    print("--- %s seconds ---" % (time.time() - start_time))
  else:
   start_time = time.time()
